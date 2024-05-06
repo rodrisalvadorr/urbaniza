@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
-import { CenterButton, CenterIcon, Container, Map } from './styles';
+import { CenterButton, CenterIcon, Container, FilterButton, FilterIcon, FilterMenu, FilterMenuIcon, FilterMenuItem, FilterMenuText, Map } from './styles';
 import MapView, { Marker, LatLng, Callout } from 'react-native-maps';
 
 import marker from '../../assets/marker.png';
@@ -15,11 +14,20 @@ import {
 	getLastKnownPositionAsync,
 } from 'expo-location';
 import { CalloutBubble } from '../../components/CalloutBubble';
+import { FlatList } from 'react-native';
+
+type FilterProps = {
+	icon: string
+	name: string
+}
 
 export function Home() {
 	const [markers, setMarkers] = useState<LatLng[]>([]);
 	const [markedSpot, setMarkedSpot] = useState<LatLng | null>(null);
 	const [location, setLocation] = useState<LocationObject | null>(null);
+
+	const [filterVisibility, setFilterVisibility] = useState(false);
+	const [filter, setFilter] = useState<FilterProps[]>([]);
 
 	const mapRef = useRef<MapView>(null);
 
@@ -74,6 +82,7 @@ export function Home() {
 				<Map
 					ref={mapRef}
 					moveOnMarkerPress
+					onPress={() => setMarkedSpot(null)}
 					onLongPress={({ nativeEvent }) =>
 						handleMarkSpot(nativeEvent.coordinate)
 					}
@@ -106,6 +115,28 @@ export function Home() {
 			<CenterButton onPress={handleCenterLocation}>
 				<CenterIcon name='gps-fixed' />
 			</CenterButton>
+			
+			{ !filterVisibility ?
+				<FilterButton onPress={() => setFilterVisibility(false)}>
+					<FilterIcon name='filter-alt' />
+				</FilterButton>
+				:
+				<FilterMenu>
+					<FlatList 
+						data={filter}
+						keyExtractor={item => item.name}
+						renderItem={({ item }) => (
+							<FilterMenuItem >
+								<FilterMenuIcon src={require(`../../assets/${item.icon}.svg`)} />
+								<FilterMenuText >
+									{item.name}
+								</FilterMenuText>
+							</FilterMenuItem>
+						)}
+					/>
+				</FilterMenu>
+			}
+
 		</Container>
 	);
 }
