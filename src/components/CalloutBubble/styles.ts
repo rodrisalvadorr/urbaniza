@@ -25,15 +25,6 @@ export const Address = styled.Text`
   text-align: center;
 `; 
 
-export const City = styled.Text`
-  color: ${({ theme }) => theme.COLORS.WHITE};
-
-  font-size: ${({ theme }) => theme.FONT_SIZE.SMALL_TEXT_2}px;
-  font-weight: ${({ theme }) => theme.FONT_WEIGHT.REGULAR};
-
-  margin-bottom: 14px;
-`;
-
 export const ButtonView = styled.TouchableOpacity`
   width: 116px;
   height: 24px;

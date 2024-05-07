@@ -1,16 +1,13 @@
-import { Address, ButtonText, ButtonView, City, Container } from './styles';
+import { Address, ButtonText, ButtonView, Container } from './styles';
 
 type Props = {
 	address: string;
-	city: string;
 };
 
-export function CalloutBubble({ address, city }: Props) {
+export function CalloutBubble({ address }: Props) {
 	return (
 		<Container>
 			<Address>{address}</Address>
-
-			<City>{city}</City>
 
 			<ButtonView>
 				<ButtonText>Publicar</ButtonText>

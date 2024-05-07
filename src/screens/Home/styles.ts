@@ -58,8 +58,14 @@ export const FilterMenu = styled.View`
 
   background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
 
-  align-items: center;
-  padding: 6px;
+  justify-content: center;
+  padding: 2px 6px;
+
+  position: absolute;
+  right: 16px;
+  bottom: 76px;
+
+  border-radius: 15px;
 `;
 
 export const FilterMenuItem = styled.TouchableOpacity`
@@ -68,17 +74,40 @@ export const FilterMenuItem = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
 
-  gap: 11px;
-`;
-
-export const FilterMenuIcon = styled.Image`
-  
+  gap: 6px;
+  margin: 4px 0;
 `;
 
 export const FilterMenuText = styled.Text`
+  flex: 1;
+
   ${({ theme }) => css`
     color: ${theme.COLORS.TEXT};
-    font-size: ${theme.FONT_SIZE.SMALL_TEXT_2};
+    font-size: ${theme.FONT_SIZE.SMALL_TEXT_2}px;
+    font-weight: ${theme.FONT_WEIGHT.REGULAR};
+  `};
+`;
+
+export const FilterRemoveButton = styled.TouchableOpacity`
+  flex: 1;
+  height: 30px;
+  
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${({ theme }) => theme.COLORS.RED};
+
+  border-radius: 15px;
+
+  margin: 4px 0;
+`;
+
+export const FilterRemoveButtonText = styled.Text`
+  text-transform: uppercase;
+
+  ${({ theme }) => css`
+    color: ${theme.COLORS.WHITE};
+    font-size: ${theme.FONT_SIZE.SMALL_TEXT_2}px;
     font-weight: ${theme.FONT_WEIGHT.REGULAR};
   `};
 `;

@@ -28,7 +28,12 @@ export default {
     BLACK: '#000000',
 
     // Font Color
-    TEXT: '#ECF0F1'
+    TEXT: '#ECF0F1',
+
+    // System State Colors
+    SUCCESS: '#2EDB35',
+    ALERT: '#DBD42E',
+    RED: '#DB352E'
   },
   FONT_SIZE: {
     TITLE_1: 39,
