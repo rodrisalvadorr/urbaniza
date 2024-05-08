@@ -18,7 +18,6 @@ import marker from '../../assets/marker.png';
 
 import {
 	requestForegroundPermissionsAsync,
-	requestBackgroundPermissionsAsync,
 	getCurrentPositionAsync,
 	LocationObject,
 	watchPositionAsync,
@@ -56,12 +55,8 @@ export function Home() {
 		const { granted } = await requestForegroundPermissionsAsync();
 
 		if (granted) {
-			const { granted } = await requestBackgroundPermissionsAsync();
-
-			if (granted) {
-				const currentLocation = await getCurrentPositionAsync();
-				setLocation(currentLocation);
-			}
+			const currentLocation = await getCurrentPositionAsync();
+			setLocation(currentLocation);
 		}
 	}
 

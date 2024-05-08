@@ -6,6 +6,7 @@ import theme from './src/theme';
 import { useFonts } from 'expo-font';
 
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
+import { Header } from './src/components/Header';
 
 export default function App() {
 	const fontsLoaded = useFonts({
@@ -21,7 +22,7 @@ export default function App() {
 		<View>
 			<ThemeProvider theme={theme}>
 				<StatusBar style='auto' />
-				<Home />
+				<Header title='Publicar' />
 			</ThemeProvider>
 		</View>
 	);
