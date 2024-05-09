@@ -1,13 +1,16 @@
-import { Container, HeaderStyleProps, Title } from './styles';
-import { Feather } from '@expo/vector-icons';
+import { BackButton, Container, HeaderStyleProps, Icon, Title } from './styles';
 
-export function Header({ backgroundColor, title }: HeaderStyleProps) {
+type Props = HeaderStyleProps & {
+	title?: string;
+};
+
+export function Header({ backgroundColor = false, title }: Props) {
 	return (
-		<Container>
-			<Feather
-				name='arrow-left'
-				size={16}
-			/>
+		<Container backgroundColor={backgroundColor}>
+			<BackButton>
+				<Icon name='arrow-left' />
+			</BackButton>
+
 			<Title>{title}</Title>
 		</Container>
 	);

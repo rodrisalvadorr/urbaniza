@@ -29,6 +29,7 @@ import { FlatList } from 'react-native';
 import { ProblemIcon } from '../../components/ProblemIcon';
 import { BackgroundColorProps } from '../../components/ProblemIcon/styles';
 import { addressParse } from '../../utils/addressParse';
+import { useNavigation } from '@react-navigation/native';
 
 type FilterProps = {
 	color: BackgroundColorProps;
@@ -42,7 +43,10 @@ export function Home() {
 	const [location, setLocation] = useState<LocationObject | null>(null);
 
 	const [filterVisibility, setFilterVisibility] = useState(false);
+
 	const mapRef = useRef<MapView>(null);
+
+	const navigation = useNavigation();
 
 	const filter: FilterProps[] = [
 		{ color: 'BROWN', name: 'Entupimento de esgoto' },
@@ -99,6 +103,10 @@ export function Home() {
 		setAddress(formatedAddress);
 	}
 
+	function handlePublish({ latitude, longitude }: LatLng) {
+		navigation.navigate('publish', { latitude, longitude });
+	}
+
 	return (
 		<Container>
 			{location && (
@@ -124,7 +132,10 @@ export function Home() {
 								longitude: markedSpot.longitude,
 							}}
 						>
-							<Callout tooltip>
+							<Callout
+								tooltip
+								onPress={() => handlePublish(markedSpot)}
+							>
 								<CalloutBubble address={address} />
 							</Callout>
 						</Marker>

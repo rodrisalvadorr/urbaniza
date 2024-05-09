@@ -1,12 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, View } from 'react-native';
-import { Home } from './src/screens/Home';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 import theme from './src/theme';
 import { useFonts } from 'expo-font';
 
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
-import { Header } from './src/components/Header';
+import { Routes } from './src/routes';
 
 export default function App() {
 	const fontsLoaded = useFonts({
@@ -19,11 +17,13 @@ export default function App() {
 	}
 
 	return (
-		<View>
-			<ThemeProvider theme={theme}>
-				<StatusBar style='auto' />
-				<Header title='Publicar' />
-			</ThemeProvider>
-		</View>
+		<ThemeProvider theme={theme}>
+			<StatusBar
+				barStyle='light-content'
+				backgroundColor='transparent'
+				translucent
+			/>
+			<Routes />
+		</ThemeProvider>
 	);
 }
