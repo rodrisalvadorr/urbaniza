@@ -8,6 +8,8 @@ export const Container = styled(SafeAreaView)`
 `;
 
 export const Form = styled.View`
+  flex: 1;
+  
   margin: 46px 32px 30px;
 
   gap: 45px;
@@ -46,4 +48,53 @@ export const ProblemItemText = styled.Text`
     font-size: ${theme.FONT_SIZE.BODY}px;
     font-weight: ${theme.FONT_WEIGHT.REGULAR};
   `};
+`;
+
+export const ProblemModal = styled.View`
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
+  
+  border-radius: 8px;
+`;
+
+export const ProblemModalItem = styled.TouchableOpacity`
+  height: 52px;
+  width: 100%;
+
+  justify-content: center;
+  padding: 0 12px;
+`;
+
+export const ProblemModalItemTitle = styled.Text`
+  ${({ theme }) => css`
+    color: ${theme.COLORS.GRAY_100};
+    font-size: ${theme.FONT_SIZE.BODY}px;
+    font-weight: ${theme.FONT_WEIGHT.REGULAR};
+  `};
+`;
+
+export const ImageSelectButton = styled.TouchableOpacity`
+  width: 80%;
+
+  height: 120px;
+  background-color: ${({ theme}) => theme.COLORS.PRIMARY_5};
+
+  border-radius: 12px;
+
+  padding: 9px 15px;
+
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+export const ImageContainer = styled.View`
+  width: 45px;
+  height: 45px;
+
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 999px;
+
+  background-color: ${({ theme}) => theme.COLORS.GRAY_800};
 `;

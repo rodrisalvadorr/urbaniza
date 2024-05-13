@@ -28,16 +28,25 @@ import { CalloutBubble } from '../../components/CalloutBubble';
 import { FlatList } from 'react-native';
 import { ProblemIcon } from '../../components/ProblemIcon';
 import { BackgroundColorProps } from '../../components/ProblemIcon/styles';
-import { addressParse } from '../../utils/addressParse';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { Pin } from '../../components/Pin';
+
+type MarkerProps = {
+	latitude: number;
+	longitude: number;
+	problem: string;
+	description: string;
+	createdAt: string;
+};
 
 type FilterProps = {
 	color: BackgroundColorProps;
 	name: string;
+	description: string;
 };
 
 export function Home() {
-	const [markers, setMarkers] = useState<LatLng[]>([]);
+	const [markers, setMarkers] = useState<MarkerProps[]>([]);
 	const [markedSpot, setMarkedSpot] = useState<LatLng | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [location, setLocation] = useState<LocationObject | null>(null);
@@ -48,11 +57,18 @@ export function Home() {
 
 	const navigation = useNavigation();
 
+	const route = useRoute();
+	const routeMarker = route.params as MarkerProps;
+
 	const filter: FilterProps[] = [
-		{ color: 'BROWN', name: 'Entupimento de esgoto' },
-		{ color: 'BLACK', name: 'Falta de iluminação' },
-		{ color: 'GREEN', name: 'Queda de árvore' },
-		{ color: 'YELLOW', name: 'Buraco na rua' },
+		{
+			color: 'BROWN',
+			name: 'waste_water',
+			description: 'Entupimento de esgoto',
+		},
+		{ color: 'BLACK', name: 'lightning', description: 'Falta de iluminação' },
+		{ color: 'GREEN', name: 'tree', description: 'Queda de árvore' },
+		{ color: 'YELLOW', name: 'hole', description: 'Buraco na rua' },
 	];
 
 	async function requestLocationPermission() {
@@ -84,6 +100,15 @@ export function Home() {
 	// 	);
 	// }, []);
 
+	useEffect(() => {
+		if (routeMarker) {
+			setMarkers(prevState => [...prevState, routeMarker]);
+			console.log(markers);
+		}
+
+		setMarkedSpot(null);
+	}, [route.params]);
+
 	async function handleCenterLocation() {
 		const currentLocation = await getCurrentPositionAsync();
 
@@ -95,12 +120,14 @@ export function Home() {
 	async function handleMarkSpot(coordinate: LatLng) {
 		setMarkedSpot(coordinate);
 
-		const { formatedAddress } = await addressParse({
+		const address = await reverseGeocodeAsync({
 			latitude: coordinate.latitude,
 			longitude: coordinate.longitude,
 		});
 
-		setAddress(formatedAddress);
+		const { formattedAddress } = address[0];
+
+		setAddress(formattedAddress ?? '');
 	}
 
 	function handlePublish({ latitude, longitude }: LatLng) {
@@ -140,6 +167,20 @@ export function Home() {
 							</Callout>
 						</Marker>
 					)}
+
+					<FlatList
+						data={markers}
+						keyExtractor={item => item.createdAt}
+						renderItem={({ item }) => (
+							<Pin
+								coordinate={{
+									latitude: item.latitude,
+									longitude: item.longitude,
+								}}
+								name='hole_pin'
+							/>
+						)}
+					/>
 				</Map>
 			)}
 
@@ -160,9 +201,9 @@ export function Home() {
 							<FilterMenuItem>
 								<ProblemIcon
 									backgroundColor={item.color}
-									name='info'
+									name={item.name}
 								/>
-								<FilterMenuText>{item.name}</FilterMenuText>
+								<FilterMenuText>{item.description}</FilterMenuText>
 							</FilterMenuItem>
 						)}
 					/>

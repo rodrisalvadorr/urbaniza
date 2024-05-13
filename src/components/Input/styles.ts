@@ -3,12 +3,12 @@ import styled, { css } from "styled-components/native";
 export const Container = styled.TextInput`
   width: 100%;
 
-  height: 37px;
+  min-height: 37px;
   background-color: ${({ theme}) => theme.COLORS.PRIMARY_5};
 
   border-radius: 12px;
 
-  padding: 0 15px;
+  padding: 9px 15px;
 
   ${({ theme }) => css`
     color: ${theme.COLORS.GRAY_100};

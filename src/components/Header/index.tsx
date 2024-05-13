@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { BackButton, Container, HeaderStyleProps, Icon, Title } from './styles';
 
 type Props = HeaderStyleProps & {
@@ -5,9 +6,15 @@ type Props = HeaderStyleProps & {
 };
 
 export function Header({ backgroundColor = false, title }: Props) {
+	const navigation = useNavigation();
+
+	function handleGoBack() {
+		navigation.navigate('home');
+	}
+
 	return (
 		<Container backgroundColor={backgroundColor}>
-			<BackButton>
+			<BackButton onPress={handleGoBack}>
 				<Icon name='arrow-left' />
 			</BackButton>
 
