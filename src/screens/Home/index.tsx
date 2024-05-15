@@ -30,6 +30,7 @@ import { ProblemIcon } from '../../components/ProblemIcon';
 import { BackgroundColorProps } from '../../components/ProblemIcon/styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Pin } from '../../components/Pin';
+import { mapStyle } from './mapStyle';
 
 type MarkerProps = {
 	latitude: number;
@@ -150,6 +151,7 @@ export function Home() {
 						latitudeDelta: 0.005,
 						longitudeDelta: 0.005,
 					}}
+					customMapStyle={mapStyle}
 				>
 					{markedSpot && (
 						<Marker
