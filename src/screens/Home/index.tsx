@@ -168,10 +168,8 @@ export function Home() {
 						</Marker>
 					)}
 
-					<FlatList
-						data={markers}
-						keyExtractor={item => item.createdAt}
-						renderItem={({ item }) => (
+					{markers &&
+						markers.map(item => (
 							<Pin
 								coordinate={{
 									latitude: item.latitude,
@@ -179,8 +177,7 @@ export function Home() {
 								}}
 								name='hole_pin'
 							/>
-						)}
-					/>
+						))}
 				</Map>
 			)}
 
