@@ -1,3 +1,4 @@
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled, { css } from "styled-components/native";
 
@@ -7,16 +8,18 @@ export const Container = styled(SafeAreaView)`
   background-color: ${({ theme }) => theme.COLORS.PRIMARY_1};
 `;
 
-export const Form = styled.View`
+export const Form = styled(ScrollView).attrs({
+  showsVerticalScrollIndicator: false,
+})`
   flex: 1;
   
   margin: 46px 32px 30px;
-
-  gap: 45px;
 `;
 
 export const FormItem = styled.View`
   gap: 12px;
+
+  margin-bottom: 45px;
 `;
 
 export const FormItemTitle = styled.Text`

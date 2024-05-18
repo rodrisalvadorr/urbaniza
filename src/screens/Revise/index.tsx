@@ -15,6 +15,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { reverseGeocodeAsync } from 'expo-location';
 import { Button } from '../../components/Button';
+import { Alert } from 'react-native';
+import { api } from '../../services/api';
 
 type RouteParams = {
 	latitude: number;
@@ -29,8 +31,7 @@ export function Revise() {
 		route.params as RouteParams;
 
 	const [address, setAddress] = useState<string>('');
-	const [buttons, setButtons] = useState<boolean>(false);
-	const [publish, setPublish] = useState<boolean>(false);
+	const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
 
 	const theme = useTheme();
 
@@ -51,19 +52,26 @@ export function Revise() {
 		setAddress(formattedAddress ?? '');
 	}
 
-	function handleConfirm() {
-		setButtons(true);
-		setPublish(true);
+	async function handleConfirm() {
+		try {
+			setButtonsDisabled(true);
 
-		setTimeout(() => {
-			navigation.navigate('home', {
+			await api.post('/occurrences', {
+				problemId: 1,
 				latitude,
 				longitude,
-				problem,
-				description,
-				createdAt: new Date().toString(),
+				comment: description,
 			});
-		}, 2000);
+
+			navigation.navigate('home', { reload: true });
+		} catch (error) {
+			Alert.alert(
+				'Erro no servidor',
+				'Não foi possível publicar. Tente mais tarde'
+			);
+
+			setButtonsDisabled(false);
+		}
 	}
 
 	function handleEdit() {
@@ -114,7 +122,7 @@ export function Revise() {
 					title='Editar'
 					type='SECONDARY'
 					onPress={handleEdit}
-					disabled={buttons}
+					disabled={buttonsDisabled}
 					style={{ marginBottom: 16, width: 156 }}
 				/>
 
@@ -122,8 +130,8 @@ export function Revise() {
 					title='Confirmar e Publicar'
 					type='PRIMARY'
 					onPress={handleConfirm}
-					disabled={buttons}
-					loading={publish}
+					disabled={buttonsDisabled}
+					loading={buttonsDisabled}
 					style={{ marginBottom: 16, width: 156 }}
 				/>
 			</Buttons>

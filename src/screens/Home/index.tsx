@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import {
 	CenterButton,
-	CenterIcon,
 	Container,
 	FilterButton,
-	FilterIcon,
 	FilterMenu,
 	FilterMenuItem,
 	FilterMenuText,
 	FilterRemoveButton,
 	FilterRemoveButtonText,
+	Icon,
+	LogOutButton,
 	Map,
 } from './styles';
 import MapView, { Marker, LatLng, Callout } from 'react-native-maps';
@@ -20,25 +20,18 @@ import {
 	requestForegroundPermissionsAsync,
 	getCurrentPositionAsync,
 	LocationObject,
-	watchPositionAsync,
-	LocationAccuracy,
 	reverseGeocodeAsync,
 } from 'expo-location';
 import { CalloutBubble } from '../../components/CalloutBubble';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 import { ProblemIcon } from '../../components/ProblemIcon';
 import { BackgroundColorProps } from '../../components/ProblemIcon/styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Pin } from '../../components/Pin';
 import { mapStyle } from './mapStyle';
-
-type MarkerProps = {
-	latitude: number;
-	longitude: number;
-	problem: string;
-	description: string;
-	createdAt: string;
-};
+import { useAuth } from '../../hooks/useAuth';
+import { api } from '../../services/api';
+import { MarkerDTO } from '../../dtos/MarkerDTO';
 
 type FilterProps = {
 	color: BackgroundColorProps;
@@ -47,19 +40,20 @@ type FilterProps = {
 };
 
 export function Home() {
-	const [markers, setMarkers] = useState<MarkerProps[]>([]);
+	const [markers, setMarkers] = useState<MarkerDTO[]>([]);
 	const [markedSpot, setMarkedSpot] = useState<LatLng | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [location, setLocation] = useState<LocationObject | null>(null);
+
+	const route = useRoute();
+
+	const { logOut } = useAuth();
 
 	const [filterVisibility, setFilterVisibility] = useState(false);
 
 	const mapRef = useRef<MapView>(null);
 
 	const navigation = useNavigation();
-
-	const route = useRoute();
-	const routeMarker = route.params as MarkerProps;
 
 	const filter: FilterProps[] = [
 		{
@@ -81,34 +75,28 @@ export function Home() {
 		}
 	}
 
+	async function fetchMarkers() {
+		try {
+			const response = await api.get('/occurrences');
+
+			if (response.data) {
+				setMarkers(response.data.occurrences);
+			}
+		} catch (error) {
+			Alert.alert(
+				'Erro no servidor',
+				'Não foi possível carregar os marcadores'
+			);
+		}
+	}
+
 	useEffect(() => {
 		requestLocationPermission();
 	}, []);
 
-	// useEffect(() => {
-	// 	watchPositionAsync(
-	// 		{
-	// 			accuracy: LocationAccuracy.Highest,
-	// 			timeInterval: 1000,
-	// 			distanceInterval: 1,
-	// 		},
-	// 		response => {
-	// 			setLocation(response);
-	// 			mapRef.current?.animateCamera({
-	// 				center: response.coords,
-	// 			});
-	// 		}
-	// 	);
-	// }, []);
-
 	useEffect(() => {
-		if (routeMarker) {
-			setMarkers(prevState => [...prevState, routeMarker]);
-			console.log(markers);
-		}
-
-		setMarkedSpot(null);
-	}, [route.params]);
+		fetchMarkers();
+	});
 
 	async function handleCenterLocation() {
 		const currentLocation = await getCurrentPositionAsync();
@@ -133,6 +121,12 @@ export function Home() {
 
 	function handlePublish({ latitude, longitude }: LatLng) {
 		navigation.navigate('publish', { latitude, longitude });
+
+		setMarkedSpot(null);
+	}
+
+	async function handleLogOut() {
+		await logOut();
 	}
 
 	return (
@@ -174,8 +168,8 @@ export function Home() {
 						markers.map(item => (
 							<Pin
 								coordinate={{
-									latitude: item.latitude,
-									longitude: item.longitude,
+									latitude: Number(item.latitude),
+									longitude: Number(item.longitude),
 								}}
 								name='hole_pin'
 							/>
@@ -184,12 +178,12 @@ export function Home() {
 			)}
 
 			<CenterButton onPress={handleCenterLocation}>
-				<CenterIcon name='gps-fixed' />
+				<Icon name='gps-fixed' />
 			</CenterButton>
 
 			{!filterVisibility ? (
 				<FilterButton onPress={() => setFilterVisibility(true)}>
-					<FilterIcon name='filter-alt' />
+					<Icon name='filter-alt' />
 				</FilterButton>
 			) : (
 				<FilterMenu>
@@ -211,6 +205,13 @@ export function Home() {
 					</FilterRemoveButton>
 				</FilterMenu>
 			)}
+
+			<LogOutButton onPress={handleLogOut}>
+				<Icon
+					name='logout'
+					style={{ transform: [{ scaleX: -1 }] }}
+				/>
+			</LogOutButton>
 		</Container>
 	);
 }

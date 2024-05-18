@@ -27,6 +27,22 @@ export const CenterButton = styled.TouchableOpacity`
   bottom: 76px;
 `;
 
+export const LogOutButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+
+  height: 40px;
+  width: 40px;
+
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
+
+  border-radius: 10px;
+
+  position: absolute;
+  right: 16px;
+  top: 76px;
+`;
+
 export const FilterButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
@@ -43,12 +59,7 @@ export const FilterButton = styled.TouchableOpacity`
   bottom: 76px;
 `;
 
-export const CenterIcon = styled(MaterialIcons).attrs(({ theme }) => ({
-  color: theme.COLORS.GRAY_100,
-  size: 30,
-}))``;
-
-export const FilterIcon = styled(MaterialIcons).attrs(({ theme }) => ({
+export const Icon = styled(MaterialIcons).attrs(({ theme }) => ({
   color: theme.COLORS.GRAY_100,
   size: 30,
 }))``;

@@ -2,12 +2,8 @@ export declare global {
   namespace ReactNavigation {
     interface RootParamList {
       home: {
-        latitude?: number,
-        longitude?: number,
-        problem?: string,
-        description?: string,
-        createdAt?: string,
-      };
+        reload?: boolean,
+      },
       publish: {
         latitude: number,
         longitude: number,
