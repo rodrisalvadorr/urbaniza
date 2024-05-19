@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
 	CenterButton,
 	Container,
@@ -26,7 +26,11 @@ import { CalloutBubble } from '../../components/CalloutBubble';
 import { Alert, FlatList } from 'react-native';
 import { ProblemIcon } from '../../components/ProblemIcon';
 import { BackgroundColorProps } from '../../components/ProblemIcon/styles';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import {
+	useFocusEffect,
+	useNavigation,
+	useRoute,
+} from '@react-navigation/native';
 import { Pin } from '../../components/Pin';
 import { mapStyle } from './mapStyle';
 import { useAuth } from '../../hooks/useAuth';
@@ -94,9 +98,11 @@ export function Home() {
 		requestLocationPermission();
 	}, []);
 
-	useEffect(() => {
-		fetchMarkers();
-	});
+	useFocusEffect(
+		useCallback(() => {
+			fetchMarkers();
+		}, [])
+	);
 
 	async function handleCenterLocation() {
 		const currentLocation = await getCurrentPositionAsync();
@@ -167,6 +173,7 @@ export function Home() {
 					{markers &&
 						markers.map(item => (
 							<Pin
+								key={item.id}
 								coordinate={{
 									latitude: Number(item.latitude),
 									longitude: Number(item.longitude),
