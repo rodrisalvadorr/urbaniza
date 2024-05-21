@@ -53,18 +53,37 @@ export const ProblemItemText = styled.Text`
   `};
 `;
 
-export const ProblemModal = styled.View`
-  background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
+export const ProblemModal = styled.Modal`
   
-  border-radius: 8px;
+`;
+
+export const ProblemModalView = styled.View`
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  justify-content: center;
+  
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
+
+  padding: 52px 32px;
 `;
 
 export const ProblemModalItem = styled.TouchableOpacity`
-  height: 52px;
-  width: 100%;
-
   justify-content: center;
-  padding: 0 12px;
+  align-items: center;
+
+  gap: 5px;
+
+  height: 80px;
+  width: 100px;
+`;
+
+export const ProblemModalItemImage = styled.Image`
+  height: 70px;
+  width: 70px;
 `;
 
 export const ProblemModalItemTitle = styled.Text`
@@ -73,6 +92,8 @@ export const ProblemModalItemTitle = styled.Text`
     font-size: ${theme.FONT_SIZE.BODY}px;
     font-weight: ${theme.FONT_WEIGHT.REGULAR};
   `};
+
+  text-align: center;
 `;
 
 export const ImageSelectButton = styled.TouchableOpacity`

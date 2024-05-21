@@ -1,28 +1,36 @@
 import { ImageSourcePropType } from 'react-native';
 import { Container } from './styles';
 
-import hole from '../../assets/hole_pin.png';
-import lightning from '../../assets/light_pin.png';
-import tree from '../../assets/tree_pin.png';
-import waste_water from '../../assets/waste_water_pin.png';
+import hole from '../../assets/pins/hole_pin.png';
+import lightning from '../../assets/pins/light_pin.png';
+import tree from '../../assets/pins/tree_pin.png';
+import waste_water from '../../assets/pins/waste_water_pin.png';
 import { LatLng } from 'react-native-maps';
 
 type Props = {
-	name: string;
+	type: number;
 	coordinate: LatLng;
 };
 
-export function Pin({ name, coordinate }: Props) {
+export function Pin({ type, coordinate }: Props) {
 	let image;
 
-	if (name === 'hole') {
-		image = hole;
-	} else if (name === 'lightning') {
-		image = lightning;
-	} else if (name === 'tree') {
-		image = tree;
-	} else {
-		image = waste_water;
+	switch (type) {
+		case 1:
+			image = hole;
+			break;
+
+		case 2:
+			image = lightning;
+			break;
+
+		case 3:
+			image = tree;
+			break;
+
+		case 4:
+			image = waste_water;
+			break;
 	}
 
 	return (

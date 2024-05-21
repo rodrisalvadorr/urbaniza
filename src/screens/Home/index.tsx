@@ -178,7 +178,7 @@ export function Home() {
 									latitude: Number(item.latitude),
 									longitude: Number(item.longitude),
 								}}
-								name='hole_pin'
+								type={item.problem_id}
 							/>
 						))}
 				</Map>

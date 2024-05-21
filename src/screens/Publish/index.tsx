@@ -9,7 +9,9 @@ import {
 	ProblemItemText,
 	ProblemModal,
 	ProblemModalItem,
+	ProblemModalItemImage,
 	ProblemModalItemTitle,
+	ProblemModalView,
 } from './styles';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/Input';
@@ -19,10 +21,11 @@ import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { FlatList, View } from 'react-native';
+import { View } from 'react-native';
 import { reverseGeocodeAsync } from 'expo-location';
 import { Button } from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import waste_water from '../../assets/filters/waste_water.png';
 
 type RouteParams = {
 	latitude: number;
@@ -109,18 +112,32 @@ export function Publish() {
 
 					{problemModal && (
 						<ProblemModal>
-							<FlatList
-								data={problems}
-								keyExtractor={item => item}
-								renderItem={({ item }) => (
-									<ProblemModalItem
-										activeOpacity={0.7}
-										onPress={() => (setProblem(item), setProblemModal(false))}
-									>
-										<ProblemModalItemTitle>{item}</ProblemModalItemTitle>
-									</ProblemModalItem>
-								)}
-							></FlatList>
+							<ProblemModalView>
+								<ProblemModalItem>
+									<ProblemModalItemImage source={waste_water} />
+									<ProblemModalItemTitle>
+										Entupimento de esgoto
+									</ProblemModalItemTitle>
+								</ProblemModalItem>
+								<ProblemModalItem>
+									<ProblemModalItemImage source={waste_water} />
+									<ProblemModalItemTitle>
+										Entupimento de esgoto
+									</ProblemModalItemTitle>
+								</ProblemModalItem>
+								<ProblemModalItem>
+									<ProblemModalItemImage source={waste_water} />
+									<ProblemModalItemTitle>
+										Entupimento de esgoto
+									</ProblemModalItemTitle>
+								</ProblemModalItem>
+								<ProblemModalItem>
+									<ProblemModalItemImage source={waste_water} />
+									<ProblemModalItemTitle>
+										Entupimento de esgoto
+									</ProblemModalItemTitle>
+								</ProblemModalItem>
+							</ProblemModalView>
 						</ProblemModal>
 					)}
 				</FormItem>
