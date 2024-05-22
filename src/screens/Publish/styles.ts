@@ -57,28 +57,32 @@ export const ProblemModal = styled.Modal`
   
 `;
 
+export const ProblemModalHeader = styled.View`
+  
+`;
+
 export const ProblemModalView = styled.View`
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
 
-  gap: 20px;
-
-  justify-content: center;
+  justify-content: space-between;
   
   background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
 
-  padding: 52px 32px;
+  padding: 32px;
 `;
 
 export const ProblemModalItem = styled.TouchableOpacity`
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   gap: 5px;
 
   height: 80px;
   width: 100px;
+
+  margin-bottom: 60px;
 `;
 
 export const ProblemModalItemImage = styled.Image`

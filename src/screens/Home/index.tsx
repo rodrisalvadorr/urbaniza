@@ -49,8 +49,6 @@ export function Home() {
 	const [address, setAddress] = useState<string>('');
 	const [location, setLocation] = useState<LocationObject | null>(null);
 
-	const route = useRoute();
-
 	const { logOut } = useAuth();
 
 	const [filterVisibility, setFilterVisibility] = useState(false);

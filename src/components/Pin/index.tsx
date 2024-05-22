@@ -1,4 +1,3 @@
-import { ImageSourcePropType } from 'react-native';
 import { Container } from './styles';
 
 import hole from '../../assets/pins/hole_pin.png';

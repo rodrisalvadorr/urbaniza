@@ -1,19 +1,17 @@
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
-      home: {
-        reload?: boolean,
-      },
+      home: undefined,
       publish: {
         latitude: number,
         longitude: number,
-        problem?: string,
+        problem?: number,
         description?: string,
       };
       revisePublish: {
         latitude: number,
         longitude: number,
-        problem: string,
+        problem: number,
         description: string,
       };
     }
