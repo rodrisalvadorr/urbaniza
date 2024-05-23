@@ -177,6 +177,9 @@ export function Home() {
 									longitude: Number(item.longitude),
 								}}
 								type={item.problem_id}
+								onPress={() =>
+									navigation.navigate('occurrenceDetails', { id: item.id })
+								}
 							/>
 						))}
 				</Map>

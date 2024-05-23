@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { AppError } from '../utils/AppError';
+import { useAuth } from '../hooks/useAuth';
 
 const api = axios.create({
   baseURL: 'https://urbaniza-api.onrender.com'
@@ -12,6 +13,10 @@ api.interceptors.request.use((request) => {
 })
 
 api.interceptors.response.use(response => response, error => {
+  if (error.response.status === 401) {
+    return Promise.reject(new AppError(error.response.data.message))
+  }
+
   if (error.response.data.issues?.email) {
     return Promise.reject(new AppError(error.response.data.issues.email._errors[0]))
   }

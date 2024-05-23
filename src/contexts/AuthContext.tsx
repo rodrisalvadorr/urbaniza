@@ -12,6 +12,7 @@ export type AuthContextDataProps = {
 	token: string | null;
 	logIn: (email: string, password: string) => Promise<void>;
 	logOut: () => Promise<void>;
+	refreshToken: () => Promise<void>;
 	loadUserData: () => Promise<void>;
 };
 
@@ -52,6 +53,19 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 		} catch (error) {}
 	}
 
+	async function refreshToken() {
+		try {
+			const { data } = await api.patch('/token/refresh');
+
+			if (data.token) {
+				await storageAuthTokenSave(data.token);
+				tokenUpdate(data.token);
+			}
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	async function loadUserData() {
 		try {
 			const token = await storageAuthTokenGet();
@@ -70,6 +84,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 				token,
 				logIn,
 				logOut,
+				refreshToken,
 				loadUserData,
 			}}
 		>

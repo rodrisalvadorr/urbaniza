@@ -9,9 +9,10 @@ import { LatLng } from 'react-native-maps';
 type Props = {
 	type: number;
 	coordinate: LatLng;
+	onPress: () => void;
 };
 
-export function Pin({ type, coordinate }: Props) {
+export function Pin({ type, coordinate, onPress }: Props) {
 	let image;
 
 	switch (type) {
@@ -36,6 +37,7 @@ export function Pin({ type, coordinate }: Props) {
 		<Container
 			image={image}
 			coordinate={coordinate}
+			onPress={onPress}
 		/>
 	);
 }

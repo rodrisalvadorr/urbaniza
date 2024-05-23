@@ -53,6 +53,7 @@ export function Login() {
 					value={password}
 					onChangeText={setPassword}
 					style={{ width: 200 }}
+					secureTextEntry
 				/>
 			</Form>
 

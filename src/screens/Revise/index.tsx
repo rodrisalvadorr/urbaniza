@@ -21,7 +21,7 @@ import { api } from '../../services/api';
 type RouteParams = {
 	latitude: number;
 	longitude: number;
-	problem: string;
+	problem: number;
 	description: string;
 };
 
@@ -57,13 +57,13 @@ export function Revise() {
 			setButtonsDisabled(true);
 
 			await api.post('/occurrences', {
-				problemId: 1,
+				problemId: problem,
 				latitude,
 				longitude,
 				comment: description,
 			});
 
-			navigation.navigate('home', { reload: true });
+			navigation.navigate('home');
 		} catch (error) {
 			Alert.alert(
 				'Erro no servidor',
@@ -88,6 +88,7 @@ export function Revise() {
 			<Header
 				title='Publicar'
 				backgroundColor
+				onPress={() => navigation.goBack()}
 			/>
 			<Form>
 				<FormItem>
