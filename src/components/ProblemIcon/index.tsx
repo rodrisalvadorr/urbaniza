@@ -1,33 +1,39 @@
-import { Image, ImageSourcePropType } from 'react-native';
-import { BackgroundColorProps, Container } from './styles';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Image, ImageProps } from 'react-native';
 
-import hole from '../../assets/hole.png';
-import lightning from '../../assets/lightning.png';
-import tree from '../../assets/tree.png';
-import waste_water from '../../assets/waste-water.png';
+import hole from '../../assets/filters/hole.png';
+import lightning from '../../assets/filters/lightning.png';
+import tree from '../../assets/filters/tree.png';
+import waste_water from '../../assets/filters/waste_water.png';
 
-type Props = {
-	backgroundColor?: BackgroundColorProps;
-	name: string;
+type Props = ImageProps & {
+	type: number;
 };
 
-export function ProblemIcon({ backgroundColor = 'BLACK', name }: Props) {
-	let image: ImageSourcePropType;
+export function ProblemIcon({ type, style }: Props) {
+	let image;
 
-	if (name === 'hole') {
-		image = hole;
-	} else if (name === 'lightning') {
-		image = lightning;
-	} else if (name === 'tree') {
-		image = tree;
-	} else {
-		image = waste_water;
+	switch (type) {
+		case 1:
+			image = hole;
+			break;
+
+		case 2:
+			image = lightning;
+			break;
+
+		case 3:
+			image = tree;
+			break;
+
+		case 4:
+			image = waste_water;
+			break;
 	}
 
 	return (
-		<Container backgroundColor={backgroundColor}>
-			<Image source={image} />
-		</Container>
+		<Image
+			style={style}
+			source={image}
+		/>
 	);
 }

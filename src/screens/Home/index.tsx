@@ -25,12 +25,7 @@ import {
 import { CalloutBubble } from '../../components/CalloutBubble';
 import { Alert, FlatList } from 'react-native';
 import { ProblemIcon } from '../../components/ProblemIcon';
-import { BackgroundColorProps } from '../../components/ProblemIcon/styles';
-import {
-	useFocusEffect,
-	useNavigation,
-	useRoute,
-} from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Pin } from '../../components/Pin';
 import { mapStyle } from './mapStyle';
 import { useAuth } from '../../hooks/useAuth';
@@ -38,8 +33,7 @@ import { api } from '../../services/api';
 import { MarkerDTO } from '../../dtos/MarkerDTO';
 
 type FilterProps = {
-	color: BackgroundColorProps;
-	name: string;
+	type: number;
 	description: string;
 };
 
@@ -58,14 +52,13 @@ export function Home() {
 	const navigation = useNavigation();
 
 	const filter: FilterProps[] = [
+		{ type: 1, description: 'Buraco na rua' },
+		{ type: 2, description: 'Falta de iluminação' },
+		{ type: 3, description: 'Queda de árvore' },
 		{
-			color: 'BROWN',
-			name: 'waste_water',
+			type: 4,
 			description: 'Entupimento de esgoto',
 		},
-		{ color: 'BLACK', name: 'lightning', description: 'Falta de iluminação' },
-		{ color: 'GREEN', name: 'tree', description: 'Queda de árvore' },
-		{ color: 'YELLOW', name: 'hole', description: 'Buraco na rua' },
 	];
 
 	async function requestLocationPermission() {
@@ -197,13 +190,10 @@ export function Home() {
 				<FilterMenu>
 					<FlatList
 						data={filter}
-						keyExtractor={item => item.name}
+						keyExtractor={item => item.description}
 						renderItem={({ item }) => (
 							<FilterMenuItem>
-								<ProblemIcon
-									backgroundColor={item.color}
-									name={item.name}
-								/>
+								<ProblemIcon type={item.type} />
 								<FilterMenuText>{item.description}</FilterMenuText>
 							</FilterMenuItem>
 						)}
