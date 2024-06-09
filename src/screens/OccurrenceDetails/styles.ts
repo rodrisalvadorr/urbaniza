@@ -63,7 +63,7 @@ export const ProblemCloseButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const ProblemClose = styled(Ionicons).attrs(({ theme }) => ({
+export const Icon = styled(Ionicons).attrs(({ theme }) => ({
   size: 20,
   color: theme.COLORS.GRAY_100
 }))``;
@@ -177,4 +177,31 @@ export const CommentFooterTime = styled.Text`
     font-size: ${theme.FONT_SIZE.SUBTITLE}px;
     font-weight: ${theme.FONT_WEIGHT.REGULAR};
   `};
+`;
+
+export const Footer = styled.View`
+  width: 100%;
+  height: 72px;
+
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY_2};
+
+  padding: 17px 21px;
+`;
+
+export const FooterWrapper = styled.View`
+  flex-direction: row;
+
+  gap: 21px;
+`;
+
+export const SendButton = styled.TouchableOpacity`
+  height: 35px;
+  width: 35px;
+
+  border-radius: 10px;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: ${({ theme }) => theme.COLORS.GRAY_800};
 `;

@@ -14,6 +14,7 @@ export const Container = styled.View`
 export const Logo = styled.Image``;
 
 export const Form = styled.View`
+  height: 94px;
   margin: 130px 0;
 
   gap: 20px;

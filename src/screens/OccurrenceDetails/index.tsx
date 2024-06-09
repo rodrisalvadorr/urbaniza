@@ -14,13 +14,16 @@ import {
 	CommentsAndLikesCount,
 	CommentsAndLikesWrapper,
 	Container,
+	Footer,
+	FooterWrapper,
 	Header,
 	LikeButton,
-	ProblemClose,
+	Icon,
 	ProblemCloseButton,
 	ProblemDescription,
 	ProblemLocation,
 	ProblemTitle,
+	SendButton,
 	Separator,
 	Subtitle,
 	Title,
@@ -33,6 +36,8 @@ import { reverseGeocodeAsync } from 'expo-location';
 import { ProblemIcon } from '../../components/ProblemIcon';
 import { PROBLEM } from '../../utils/ProblemList';
 import { useTheme } from 'styled-components/native';
+import { Input } from '../../components/Input';
+import { AppError } from '../../utils/AppError';
 
 type RouteParams = {
 	id: string;
@@ -44,6 +49,7 @@ export function OccurrenceDetails() {
 	);
 	const [formattedAddress, setFormattedAddress] = useState<string>('');
 	const [likeCount, setLikeCount] = useState(0);
+	const [commentInput, setCommentInput] = useState('');
 
 	const route = useRoute();
 	const { id } = route.params as RouteParams;
@@ -87,6 +93,28 @@ export function OccurrenceDetails() {
 		setFormattedAddress(formattedAddress ?? '');
 	}
 
+	async function handleCreateComment() {
+		try {
+			const response = await api.post(
+				`/occurrences/${occurrence.occurrence.id}/comments`,
+				{
+					comment: commentInput,
+				}
+			);
+
+			if (response.status === 201) {
+				await fetchOccurrenceDetails();
+			}
+		} catch (error) {
+			const isAppError = error instanceof AppError;
+			const title = isAppError
+				? error.message
+				: 'Não foi possível criar o comentário.';
+
+			Alert.alert('Erro', title);
+		}
+	}
+
 	return (
 		occurrence.occurrence && (
 			<Container>
@@ -105,21 +133,13 @@ export function OccurrenceDetails() {
 						</ProblemDescription>
 
 						<ProblemCloseButton onPress={() => navigation.navigate('home')}>
-							<ProblemClose name='close-sharp' />
+							<Icon name='close-sharp' />
 						</ProblemCloseButton>
 					</Title>
 
 					<Subtitle>
 						<Author>
-							{/* {`Postado em ${
-								occurrence.comments
-									? occurrence.comments[0].created_at
-									: 'algum momento no passado'
-							} por ${
-								occurrence.comments
-									? occurrence.comments[0].user.name
-									: 'algum usuário'
-							}`} */}
+							{`Postado em ${occurrence.occurrence.created_at} por ${occurrence.occurrence.user_id}`}
 						</Author>
 						<CommentsAndLikes>
 							<CommentsAndLikesWrapper disabled>
@@ -142,6 +162,7 @@ export function OccurrenceDetails() {
 						</CommentsAndLikes>
 					</Subtitle>
 				</Header>
+
 				<Body>
 					<FlatList
 						data={occurrence.comments}
@@ -188,6 +209,19 @@ export function OccurrenceDetails() {
 						)}
 					/>
 				</Body>
+
+				<Footer>
+					<FooterWrapper>
+						<Input
+							placeholder='Comentar...'
+							value={commentInput}
+							onChangeText={setCommentInput}
+						/>
+						<SendButton onPress={handleCreateComment}>
+							<Icon name='send' />
+						</SendButton>
+					</FooterWrapper>
+				</Footer>
 			</Container>
 		)
 	);

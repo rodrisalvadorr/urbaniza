@@ -5,6 +5,8 @@ export type OccurrenceDTO = {
     longitude: number
     problem_id: number
     user_id: string
+    created_at: string
+    status: string
   },
   comments: [{
     occurrence_id: string

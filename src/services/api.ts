@@ -20,6 +20,7 @@ api.interceptors.response.use(response => response, error => {
   if (error.response.data.issues?.email) {
     return Promise.reject(new AppError(error.response.data.issues.email._errors[0]))
   }
+  
   if (error.response.data.issues?.password) {
     return Promise.reject(new AppError(error.response.data.issues.password._errors[0]))
   } else {

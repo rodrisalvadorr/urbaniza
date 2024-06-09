@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components/native";
 
 export const Container = styled.TextInput`
-  width: 100%;
+  flex: 1;
 
   min-height: 37px;
   background-color: ${({ theme}) => theme.COLORS.PRIMARY_5};
