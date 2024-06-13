@@ -7,6 +7,7 @@ import {
 	storageAuthTokenGet,
 	storageAuthTokenRemove,
 } from '../storage/storageAuthToken';
+import { storageUserRemove, storageUserSave } from '../storage/storageUser';
 
 export type AuthContextDataProps = {
 	token: string | null;
@@ -35,11 +36,18 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
 	async function logIn(email: string, password: string) {
 		try {
-			const { data } = await api.post('/sessions', { email, password });
+			const { data: token } = await api.post('/sessions', { email, password });
 
-			if (data.token) {
-				await storageAuthTokenSave(data.token);
-				tokenUpdate(data.token);
+			if (token.token) {
+				await storageAuthTokenSave(token.token);
+
+				tokenUpdate(token.token);
+
+				const { data } = await api.get('/me');
+				const { id, name, email }: UserDTO = data;
+
+				await storageUserSave({ id, name, email });
+				setUser({ id, name, email });
 			}
 		} catch (error) {
 			throw error;
@@ -49,7 +57,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 	async function logOut() {
 		try {
 			setToken(null);
+			setUser({} as UserDTO);
+
 			await storageAuthTokenRemove();
+			await storageUserRemove();
 		} catch (error) {}
 	}
 

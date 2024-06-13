@@ -39,6 +39,9 @@ type FilterProps = {
 
 export function Home() {
 	const [markers, setMarkers] = useState<MarkerDTO[]>([]);
+	const [markersList, setMarkersList] = useState<MarkerDTO[]>([]);
+	const [selectedFilter, setSelectedFilter] = useState(0);
+
 	const [markedSpot, setMarkedSpot] = useState<LatLng | null>(null);
 	const [address, setAddress] = useState<string>('');
 	const [location, setLocation] = useState<LocationObject | null>(null);
@@ -61,6 +64,16 @@ export function Home() {
 		},
 	];
 
+	useEffect(() => {
+		requestLocationPermission();
+	}, []);
+
+	useFocusEffect(
+		useCallback(() => {
+			fetchMarkers();
+		}, [])
+	);
+
 	async function requestLocationPermission() {
 		const { granted } = await requestForegroundPermissionsAsync();
 
@@ -76,6 +89,7 @@ export function Home() {
 
 			if (response.data) {
 				setMarkers(response.data.occurrences);
+				setMarkersList(response.data.occurrences);
 			}
 		} catch (error) {
 			Alert.alert(
@@ -84,16 +98,6 @@ export function Home() {
 			);
 		}
 	}
-
-	useEffect(() => {
-		requestLocationPermission();
-	}, []);
-
-	useFocusEffect(
-		useCallback(() => {
-			fetchMarkers();
-		}, [])
-	);
 
 	async function handleCenterLocation() {
 		const currentLocation = await getCurrentPositionAsync();
@@ -126,13 +130,34 @@ export function Home() {
 		await logOut();
 	}
 
+	function handleFilterMarkers(problem: number) {
+		setSelectedFilter(problem);
+		setFilterVisibility(false);
+
+		if (problem === 0) {
+			setMarkersList(markers);
+		} else {
+			const filteredList = markers.filter(item => item.problem_id === problem);
+
+			setMarkersList(filteredList);
+		}
+	}
+
+	function handleDeselect() {
+		if (filterVisibility) {
+			setFilterVisibility(false);
+		} else {
+			setMarkedSpot(null);
+		}
+	}
+
 	return (
 		<Container>
 			{location && (
 				<Map
 					ref={mapRef}
 					moveOnMarkerPress
-					onPress={() => setMarkedSpot(null)}
+					onPress={() => handleDeselect()}
 					onLongPress={({ nativeEvent }) =>
 						handleMarkSpot(nativeEvent.coordinate)
 					}
@@ -161,8 +186,8 @@ export function Home() {
 						</Marker>
 					)}
 
-					{markers &&
-						markers.map(item => (
+					{markersList &&
+						markersList.map(item => (
 							<Pin
 								key={item.id}
 								coordinate={{
@@ -184,7 +209,14 @@ export function Home() {
 
 			{!filterVisibility ? (
 				<FilterButton onPress={() => setFilterVisibility(true)}>
-					<Icon name='filter-alt' />
+					{selectedFilter === 0 ? (
+						<Icon name='filter-alt' />
+					) : (
+						<ProblemIcon
+							type={selectedFilter}
+							style={{ width: 40, height: 40 }}
+						/>
+					)}
 				</FilterButton>
 			) : (
 				<FilterMenu>
@@ -192,13 +224,16 @@ export function Home() {
 						data={filter}
 						keyExtractor={item => item.description}
 						renderItem={({ item }) => (
-							<FilterMenuItem>
-								<ProblemIcon type={item.type} />
+							<FilterMenuItem onPress={() => handleFilterMarkers(item.type)}>
+								<ProblemIcon
+									type={item.type}
+									style={{ width: 40, height: 40 }}
+								/>
 								<FilterMenuText>{item.description}</FilterMenuText>
 							</FilterMenuItem>
 						)}
 					/>
-					<FilterRemoveButton onPress={() => setFilterVisibility(false)}>
+					<FilterRemoveButton onPress={() => handleFilterMarkers(0)}>
 						<FilterRemoveButtonText>Remover Filtro</FilterRemoveButtonText>
 					</FilterRemoveButton>
 				</FilterMenu>

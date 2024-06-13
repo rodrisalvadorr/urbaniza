@@ -5,6 +5,7 @@ import { Button } from '../../components/Button';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { Alert } from 'react-native';
+import { AppError } from '../../utils/AppError';
 
 type LoginProps = {
 	email: string;
@@ -28,10 +29,13 @@ export function Login() {
 			setButtonsDisabled(true);
 			await logIn(email, password);
 		} catch (error) {
-			Alert.alert(
-				'Credencias inválidas',
-				'O email e/ou senha estão incorretos'
-			);
+			const isAppError = error instanceof AppError;
+
+			const title = isAppError
+				? error.message
+				: 'Não foi possível criar o comentário.';
+
+			Alert.alert('Credencias inválidas', title);
 
 			setButtonsDisabled(false);
 		}

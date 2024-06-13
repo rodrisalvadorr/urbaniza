@@ -65,7 +65,7 @@ export const Icon = styled(MaterialIcons).attrs(({ theme }) => ({
 }))``;
 
 export const FilterMenu = styled.View`
-  width: 117px;
+  width: 140px;
 
   background-color: ${({ theme }) => theme.COLORS.PRIMARY_5};
 
@@ -94,7 +94,7 @@ export const FilterMenuText = styled.Text`
 
   ${({ theme }) => css`
     color: ${theme.COLORS.TEXT};
-    font-size: ${theme.FONT_SIZE.SMALL_TEXT_2}px;
+    font-size: ${theme.FONT_SIZE.SMALL_TEXT_1}px;
     font-weight: ${theme.FONT_WEIGHT.REGULAR};
   `};
 `;
@@ -118,7 +118,7 @@ export const FilterRemoveButtonText = styled.Text`
 
   ${({ theme }) => css`
     color: ${theme.COLORS.WHITE};
-    font-size: ${theme.FONT_SIZE.SMALL_TEXT_2}px;
+    font-size: ${theme.FONT_SIZE.SMALL_TEXT_1}px;
     font-weight: ${theme.FONT_WEIGHT.REGULAR};
   `};
 `;
