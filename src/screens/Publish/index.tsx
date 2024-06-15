@@ -143,7 +143,7 @@ export function Publish() {
 										handleSetProblem({ id: 2, title: 'Falta de iluminação' })
 									}
 								>
-									<ProblemModalItemImage source={tree} />
+									<ProblemModalItemImage source={lightning} />
 									<ProblemModalItemTitle>
 										Falta de iluminação
 									</ProblemModalItemTitle>
@@ -154,7 +154,7 @@ export function Publish() {
 										handleSetProblem({ id: 3, title: 'Queda de árvore' })
 									}
 								>
-									<ProblemModalItemImage source={lightning} />
+									<ProblemModalItemImage source={tree} />
 									<ProblemModalItemTitle>Queda de árvore</ProblemModalItemTitle>
 								</ProblemModalItem>
 
