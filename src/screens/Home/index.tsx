@@ -31,6 +31,7 @@ import { mapStyle } from './mapStyle';
 import { useAuth } from '../../hooks/useAuth';
 import { api } from '../../services/api';
 import { MarkerDTO } from '../../dtos/MarkerDTO';
+import { Loading } from '../../components/Loading';
 
 type FilterProps = {
 	type: number;
@@ -38,6 +39,8 @@ type FilterProps = {
 };
 
 export function Home() {
+	const [isLoading, setIsLoading] = useState(true);
+
 	const [markers, setMarkers] = useState<MarkerDTO[]>([]);
 	const [markersList, setMarkersList] = useState<MarkerDTO[]>([]);
 	const [selectedFilter, setSelectedFilter] = useState(0);
@@ -91,10 +94,18 @@ export function Home() {
 				setMarkers(response.data.occurrences);
 				setMarkersList(response.data.occurrences);
 			}
+
+			setIsLoading(false);
 		} catch (error) {
 			Alert.alert(
 				'Erro no servidor',
-				'Não foi possível carregar os marcadores'
+				'Não foi possível carregar os marcadores',
+				[
+					{
+						text: 'Ok',
+						onPress: () => logOut(),
+					},
+				]
 			);
 		}
 	}
@@ -151,100 +162,108 @@ export function Home() {
 		}
 	}
 
+	if (isLoading && !location) {
+		return <Loading />;
+	}
+
 	return (
 		<Container>
 			{location && (
-				<Map
-					ref={mapRef}
-					moveOnMarkerPress
-					onPress={() => handleDeselect()}
-					onLongPress={({ nativeEvent }) =>
-						handleMarkSpot(nativeEvent.coordinate)
-					}
-					initialRegion={{
-						latitude: location.coords.latitude,
-						longitude: location.coords.longitude,
-						latitudeDelta: 0.005,
-						longitudeDelta: 0.005,
-					}}
-					customMapStyle={mapStyle}
-				>
-					{markedSpot && (
-						<Marker
-							image={marker}
-							coordinate={{
-								latitude: markedSpot.latitude,
-								longitude: markedSpot.longitude,
-							}}
-						>
-							<Callout
-								tooltip
-								onPress={() => handlePublish(markedSpot)}
-							>
-								<CalloutBubble address={address} />
-							</Callout>
-						</Marker>
-					)}
-
-					{markersList &&
-						markersList.map(item => (
-							<Pin
-								key={item.id}
+				<>
+					<Map
+						ref={mapRef}
+						moveOnMarkerPress
+						onPress={() => handleDeselect()}
+						onLongPress={({ nativeEvent }) =>
+							handleMarkSpot(nativeEvent.coordinate)
+						}
+						initialRegion={{
+							latitude: location.coords.latitude,
+							longitude: location.coords.longitude,
+							latitudeDelta: 0.005,
+							longitudeDelta: 0.005,
+						}}
+						customMapStyle={mapStyle}
+					>
+						{markedSpot && (
+							<Marker
+								image={marker}
 								coordinate={{
-									latitude: Number(item.latitude),
-									longitude: Number(item.longitude),
+									latitude: markedSpot.latitude,
+									longitude: markedSpot.longitude,
 								}}
-								type={item.problem_id}
-								onPress={() =>
-									navigation.navigate('occurrenceDetails', { id: item.id })
-								}
-							/>
-						))}
-				</Map>
-			)}
+							>
+								<Callout
+									tooltip
+									onPress={() => handlePublish(markedSpot)}
+								>
+									<CalloutBubble address={address} />
+								</Callout>
+							</Marker>
+						)}
 
-			<CenterButton onPress={handleCenterLocation}>
-				<Icon name='gps-fixed' />
-			</CenterButton>
+						{markersList &&
+							markersList.map(item => (
+								<Pin
+									key={item.id}
+									coordinate={{
+										latitude: Number(item.latitude),
+										longitude: Number(item.longitude),
+									}}
+									type={item.problem_id}
+									onPress={() =>
+										navigation.navigate('occurrenceDetails', { id: item.id })
+									}
+								/>
+							))}
+					</Map>
 
-			{!filterVisibility ? (
-				<FilterButton onPress={() => setFilterVisibility(true)}>
-					{selectedFilter === 0 ? (
-						<Icon name='filter-alt' />
-					) : (
-						<ProblemIcon
-							type={selectedFilter}
-							style={{ width: 40, height: 40 }}
-						/>
-					)}
-				</FilterButton>
-			) : (
-				<FilterMenu>
-					<FlatList
-						data={filter}
-						keyExtractor={item => item.description}
-						renderItem={({ item }) => (
-							<FilterMenuItem onPress={() => handleFilterMarkers(item.type)}>
+					<CenterButton onPress={handleCenterLocation}>
+						<Icon name='gps-fixed' />
+					</CenterButton>
+
+					{!filterVisibility ? (
+						<FilterButton onPress={() => setFilterVisibility(true)}>
+							{selectedFilter === 0 ? (
+								<Icon name='filter-alt' />
+							) : (
 								<ProblemIcon
-									type={item.type}
+									type={selectedFilter}
 									style={{ width: 40, height: 40 }}
 								/>
-								<FilterMenuText>{item.description}</FilterMenuText>
-							</FilterMenuItem>
-						)}
-					/>
-					<FilterRemoveButton onPress={() => handleFilterMarkers(0)}>
-						<FilterRemoveButtonText>Remover Filtro</FilterRemoveButtonText>
-					</FilterRemoveButton>
-				</FilterMenu>
-			)}
+							)}
+						</FilterButton>
+					) : (
+						<FilterMenu>
+							<FlatList
+								data={filter}
+								keyExtractor={item => item.description}
+								renderItem={({ item }) => (
+									<FilterMenuItem
+										onPress={() => handleFilterMarkers(item.type)}
+									>
+										<ProblemIcon
+											type={item.type}
+											style={{ width: 40, height: 40 }}
+										/>
+										<FilterMenuText>{item.description}</FilterMenuText>
+									</FilterMenuItem>
+								)}
+							/>
+							<FilterRemoveButton onPress={() => handleFilterMarkers(0)}>
+								<FilterRemoveButtonText>Remover Filtro</FilterRemoveButtonText>
+							</FilterRemoveButton>
+						</FilterMenu>
+					)}
 
-			<LogOutButton onPress={handleLogOut}>
-				<Icon
-					name='logout'
-					style={{ transform: [{ scaleX: -1 }] }}
-				/>
-			</LogOutButton>
+					<LogOutButton onPress={handleLogOut}>
+						<Icon
+							name='logout'
+							style={{ transform: [{ scaleX: -1 }] }}
+						/>
+					</LogOutButton>
+				</>
+			)}
 		</Container>
 	);
 }

@@ -4,6 +4,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 export const Container = styled.View`
   position: relative;
+
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY_1};
 `;
 
 export const Map = styled(MapView)`
@@ -25,6 +27,8 @@ export const CenterButton = styled.TouchableOpacity`
   position: absolute;
   left: 16px;
   bottom: 76px;
+
+  z-index: 1;
 `;
 
 export const LogOutButton = styled.TouchableOpacity`
@@ -41,6 +45,8 @@ export const LogOutButton = styled.TouchableOpacity`
   position: absolute;
   right: 16px;
   top: 76px;
+
+  z-index: 1;
 `;
 
 export const FilterButton = styled.TouchableOpacity`
@@ -57,6 +63,8 @@ export const FilterButton = styled.TouchableOpacity`
   position: absolute;
   right: 16px;
   bottom: 76px;
+
+  z-index: 1;
 `;
 
 export const Icon = styled(MaterialIcons).attrs(({ theme }) => ({
