@@ -18,6 +18,8 @@ import { AppError } from '../../utils/AppError';
 import { Problem } from '../../components/Problem';
 import { Comment } from '../../components/Comment';
 import { Loading } from '../../components/Loading';
+import { storageUserGet } from '../../storage/storageUser';
+import { UserDTO } from '../../dtos/UserDTO';
 
 type RouteParams = {
 	id: string;
@@ -28,6 +30,9 @@ export function OccurrenceDetails() {
 
 	const [occurrence, setOccurrence] = useState<OccurrenceDTO>(
 		{} as OccurrenceDTO
+	);
+	const [authenticatedUser, setAuthenticatedUser] = useState<UserDTO>(
+		{} as UserDTO
 	);
 	const [formattedAddress, setFormattedAddress] = useState<string>('');
 	const [commentInput, setCommentInput] = useState('');
@@ -48,6 +53,10 @@ export function OccurrenceDetails() {
 			getAddress();
 		}
 	}, [occurrence]);
+
+	useEffect(() => {
+		getUserInfo();
+	}, []);
 
 	async function fetchOccurrenceDetails() {
 		try {
@@ -81,6 +90,11 @@ export function OccurrenceDetails() {
 		const { formattedAddress } = address[0];
 
 		setFormattedAddress(formattedAddress ?? '');
+	}
+
+	async function getUserInfo() {
+		const user = await storageUserGet();
+		setAuthenticatedUser(user);
 	}
 
 	async function handleCreateComment() {
@@ -136,6 +150,8 @@ export function OccurrenceDetails() {
 								likeCount={1}
 								occurrenceId={item.occurrence_id}
 								onCommentEdited={fetchOccurrenceDetails}
+								authorId={item.user_id}
+								authenticatedUserId={authenticatedUser.id}
 							/>
 						)}
 						ListEmptyComponent={() => (

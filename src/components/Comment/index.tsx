@@ -28,6 +28,8 @@ type Props = {
 	createdAt: string;
 	likeCount: number;
 	occurrenceId: string;
+	authorId: string;
+	authenticatedUserId: string;
 	onCommentEdited: () => void;
 };
 
@@ -37,6 +39,8 @@ export function Comment({
 	createdAt,
 	likeCount,
 	occurrenceId,
+	authorId,
+	authenticatedUserId,
 	onCommentEdited,
 }: Props) {
 	const [isEditing, setIsEditing] = useState(false);
@@ -97,17 +101,21 @@ export function Comment({
 				</CommentFooterTime>
 
 				<ButtonsWrapper>
-					<ButtonWrapper>
-						<Button onPress={handleEditComment}>
-							{!isEditing ? (
-								<EditButton name='edit' />
-							) : (
-								<EditButton name='x' />
-							)}
-						</Button>
-					</ButtonWrapper>
+					{authorId === authenticatedUserId && (
+						<>
+							<ButtonWrapper>
+								<Button onPress={handleEditComment}>
+									{!isEditing ? (
+										<EditButton name='edit' />
+									) : (
+										<EditButton name='x' />
+									)}
+								</Button>
+							</ButtonWrapper>
 
-					<Separator />
+							<Separator />
+						</>
+					)}
 
 					<ButtonWrapper>
 						{!isEditing && (

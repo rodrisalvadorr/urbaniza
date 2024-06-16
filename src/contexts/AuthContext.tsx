@@ -44,7 +44,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 				tokenUpdate(token.token);
 
 				const { data } = await api.get('/me');
-				const { id, name, email }: UserDTO = data;
+				const { id, name, email }: UserDTO = data.user;
 
 				await storageUserSave({ id, name, email });
 				setUser({ id, name, email });
