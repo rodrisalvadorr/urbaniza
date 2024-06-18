@@ -1,4 +1,5 @@
-import { PROBLEM } from '../../utils/ProblemList';
+import { ptBR } from 'date-fns/locale';
+import { problemIdToTitle } from '../../utils/ProblemList';
 import { ProblemIcon } from '../ProblemIcon';
 import {
 	Author,
@@ -18,6 +19,7 @@ import {
 	Title,
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
+import { format } from 'date-fns';
 
 type Props = {
 	icon: number;
@@ -49,7 +51,7 @@ export function Problem({
 				/>
 
 				<Description>
-					<ProblemTitle>{PROBLEM[icon]}</ProblemTitle>
+					<ProblemTitle>{problemIdToTitle(icon)}</ProblemTitle>
 					<ProblemLocation>{address}</ProblemLocation>
 				</Description>
 
@@ -61,7 +63,9 @@ export function Problem({
 			</Title>
 
 			<Subtitle>
-				<Author>{`Postado em ${createdAt} por ${user}`}</Author>
+				<Author>{`Postado em ${format(new Date(createdAt), 'Pp', {
+					locale: ptBR,
+				})} por ${user}`}</Author>
 				<ButtonsWrapper>
 					<ButtonWrapper disabled>
 						<CommentsAndLikesCount>{commentCount}</CommentsAndLikesCount>

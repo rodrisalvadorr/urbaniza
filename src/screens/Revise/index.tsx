@@ -17,6 +17,7 @@ import { reverseGeocodeAsync } from 'expo-location';
 import { Button } from '../../components/Button';
 import { Alert } from 'react-native';
 import { api } from '../../services/api';
+import { problemIdToTitle } from '../../utils/ProblemList';
 
 type RouteParams = {
 	latitude: number;
@@ -105,17 +106,19 @@ export function Revise() {
 				</Photo>
 
 				<FormItem>
-					<FormSubtitle>{problem}</FormSubtitle>
+					<FormSubtitle>{problemIdToTitle(problem)}</FormSubtitle>
 				</FormItem>
 
 				<FormItem>
 					<FormSmallSubtitle>{address}</FormSmallSubtitle>
 				</FormItem>
 
-				<FormItem>
-					<FormSubtitle>Descrição</FormSubtitle>
-					<FormSmallSubtitle>{description}</FormSmallSubtitle>
-				</FormItem>
+				{description && (
+					<FormItem>
+						<FormSubtitle>Descrição</FormSubtitle>
+						<FormSmallSubtitle>{description}</FormSmallSubtitle>
+					</FormItem>
+				)}
 			</Form>
 
 			<Buttons>

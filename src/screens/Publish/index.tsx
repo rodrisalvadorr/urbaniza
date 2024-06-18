@@ -121,56 +121,57 @@ export function Publish() {
 						/>
 					</ProblemItem>
 
-					{problemModal && (
-						<ProblemModal>
-							<Header
-								title='Selecione o Problema'
-								backgroundColor
-								onPress={() => setProblemModal(false)}
-							/>
-							<ProblemModalView>
-								<ProblemModalItem
-									onPress={() =>
-										handleSetProblem({ id: 1, title: 'Buraco na rua' })
-									}
-								>
-									<ProblemModalItemImage source={hole} />
-									<ProblemModalItemTitle>Buraco na rua</ProblemModalItemTitle>
-								</ProblemModalItem>
+					<ProblemModal
+						visible={problemModal}
+						animationType='slide'
+					>
+						<Header
+							title='Selecione o Problema'
+							backgroundColor
+							onPress={() => setProblemModal(false)}
+						/>
+						<ProblemModalView>
+							<ProblemModalItem
+								onPress={() =>
+									handleSetProblem({ id: 1, title: 'Buraco na rua' })
+								}
+							>
+								<ProblemModalItemImage source={hole} />
+								<ProblemModalItemTitle>Buraco na rua</ProblemModalItemTitle>
+							</ProblemModalItem>
 
-								<ProblemModalItem
-									onPress={() =>
-										handleSetProblem({ id: 2, title: 'Falta de iluminação' })
-									}
-								>
-									<ProblemModalItemImage source={lightning} />
-									<ProblemModalItemTitle>
-										Falta de iluminação
-									</ProblemModalItemTitle>
-								</ProblemModalItem>
+							<ProblemModalItem
+								onPress={() =>
+									handleSetProblem({ id: 2, title: 'Falta de iluminação' })
+								}
+							>
+								<ProblemModalItemImage source={lightning} />
+								<ProblemModalItemTitle>
+									Falta de iluminação
+								</ProblemModalItemTitle>
+							</ProblemModalItem>
 
-								<ProblemModalItem
-									onPress={() =>
-										handleSetProblem({ id: 3, title: 'Queda de árvore' })
-									}
-								>
-									<ProblemModalItemImage source={tree} />
-									<ProblemModalItemTitle>Queda de árvore</ProblemModalItemTitle>
-								</ProblemModalItem>
+							<ProblemModalItem
+								onPress={() =>
+									handleSetProblem({ id: 3, title: 'Queda de árvore' })
+								}
+							>
+								<ProblemModalItemImage source={tree} />
+								<ProblemModalItemTitle>Queda de árvore</ProblemModalItemTitle>
+							</ProblemModalItem>
 
-								<ProblemModalItem
-									onPress={() =>
-										handleSetProblem({ id: 4, title: 'Entupimento de esgoto' })
-									}
-								>
-									<ProblemModalItemImage source={waste_water} />
-									<ProblemModalItemTitle>
-										Entupimento de esgoto
-									</ProblemModalItemTitle>
-								</ProblemModalItem>
-							</ProblemModalView>
-						</ProblemModal>
-					)}
+							<ProblemModalItem
+								onPress={() =>
+									handleSetProblem({ id: 4, title: 'Entupimento de esgoto' })
+								}
+							>
+								<ProblemModalItemImage source={waste_water} />
+								<ProblemModalItemTitle>
+									Entupimento de esgoto
+								</ProblemModalItemTitle>
+							</ProblemModalItem>
+						</ProblemModalView>
+					</ProblemModal>
 				</FormItem>
 
 				<FormItem>
@@ -207,15 +208,12 @@ export function Publish() {
 						</ImageContainer>
 					</ImageSelectButton>
 				</FormItem>
-			</Form>
 
-			<View style={{ alignItems: 'center' }}>
 				<Button
 					title='Avançar'
 					onPress={handleRevise}
-					style={{ marginBottom: 16, width: 258, marginHorizontal: 'auto' }}
 				/>
-			</View>
+			</Form>
 		</Container>
 	);
 }

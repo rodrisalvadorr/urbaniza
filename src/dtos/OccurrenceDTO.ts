@@ -7,6 +7,9 @@ export type OccurrenceDTO = {
     user_id: string
     created_at: string
     status: string
+    user: {
+      name: string
+    }
   },
   comments: [{
     occurrence_id: string

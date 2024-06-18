@@ -130,7 +130,7 @@ export function OccurrenceDetails() {
 		occurrence.occurrence && (
 			<Container>
 				<Problem
-					user={occurrence.occurrence.user_id}
+					user={occurrence.occurrence.user.name}
 					address={formattedAddress}
 					createdAt={occurrence.occurrence.created_at}
 					icon={occurrence.occurrence.problem_id}
