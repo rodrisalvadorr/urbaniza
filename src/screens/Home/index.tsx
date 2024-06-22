@@ -23,7 +23,7 @@ import {
 	reverseGeocodeAsync,
 } from 'expo-location';
 import { CalloutBubble } from '../../components/CalloutBubble';
-import { Alert, FlatList } from 'react-native';
+import { Alert, FlatList, PermissionsAndroid } from 'react-native';
 import { ProblemIcon } from '../../components/ProblemIcon';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Pin } from '../../components/Pin';
@@ -109,6 +109,9 @@ export function Home() {
 
 		mapRef.current?.animateCamera({
 			center: currentLocation.coords,
+			zoom: 17.5,
+			pitch: 0,
+			heading: 0,
 		});
 	}
 
@@ -166,6 +169,11 @@ export function Home() {
 				<>
 					<Map
 						ref={mapRef}
+						onMapReady={() => {
+							PermissionsAndroid.request(
+								PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+							);
+						}}
 						moveOnMarkerPress
 						onPress={() => handleDeselect()}
 						onLongPress={({ nativeEvent }) =>
@@ -177,6 +185,10 @@ export function Home() {
 							latitudeDelta: 0.005,
 							longitudeDelta: 0.005,
 						}}
+						showsUserLocation={true}
+						showsCompass={false}
+						showsMyLocationButton={false}
+						toolbarEnabled={false}
 						customMapStyle={mapStyle}
 					>
 						{markedSpot && (
