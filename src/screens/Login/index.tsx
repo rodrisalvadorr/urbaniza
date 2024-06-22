@@ -13,16 +13,12 @@ type LoginProps = {
 };
 
 export function Login() {
-	const { logIn, loadUserData } = useAuth();
+	const { logIn } = useAuth();
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const [buttonsDisabled, setButtonsDisabled] = useState<boolean>(false);
-
-	useEffect(() => {
-		loadUserData();
-	}, []);
 
 	async function handleLogin({ email, password }: LoginProps) {
 		try {
@@ -31,9 +27,7 @@ export function Login() {
 		} catch (error) {
 			const isAppError = error instanceof AppError;
 
-			const title = isAppError
-				? error.message
-				: 'Não foi possível criar o comentário.';
+			const title = isAppError ? error.message : 'Email e/ou senha inválidos.';
 
 			Alert.alert('Credencias inválidas', title);
 

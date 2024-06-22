@@ -97,8 +97,6 @@ export function Home() {
 
 			setIsLoading(false);
 		} catch (error) {
-			await logOut();
-
 			Alert.alert(
 				'Erro no servidor',
 				'Não foi possível carregar os marcadores'

@@ -70,13 +70,7 @@ export function OccurrenceDetails() {
 		} catch (error) {
 			Alert.alert(
 				'Erro',
-				'Não foi possível obter as informações da ocorrência',
-				[
-					{
-						text: 'Ok',
-						onPress: () => navigation.navigate('home'),
-					},
-				]
+				'Não foi possível obter as informações da ocorrência'
 			);
 		}
 	}
