@@ -256,9 +256,13 @@ export function Home() {
 									</FilterMenuItem>
 								)}
 							/>
-							<FilterRemoveButton onPress={() => handleFilterMarkers(0)}>
-								<FilterRemoveButtonText>Remover Filtro</FilterRemoveButtonText>
-							</FilterRemoveButton>
+							{selectedFilter !== 0 && (
+								<FilterRemoveButton onPress={() => handleFilterMarkers(0)}>
+									<FilterRemoveButtonText>
+										Remover Filtro
+									</FilterRemoveButtonText>
+								</FilterRemoveButton>
+							)}
 						</FilterMenu>
 					)}
 
